@@ -86,23 +86,60 @@ const App = () => {
       setEndMessage(`${itemArray[2]} wins the game`);
     }
   };
+  //function to update the icon based on the card click
+  const changeItem = (itemNumber) => {
+    // ending the game and allowing the players to click further
+    if (endMessage) {
+      return;
+    }
 
+    // checking the card, if it is empty then change to cross or circle
+    // if it is not empty then we need to provide the tostify (Already filled)
+    if (itemArray[itemNumber] === "empty") {
+      // initially the isCross will be false(means the player 1 will be take the circle)
+      // if the iscross is false assign circle else cross
+      itemArray[itemNumber] = isCross ? "cross" : "circle";
+
+      // setting it to true so that the player 2 will take the cross (to toggle b/w the players)
+      setIsCross(!isCross);
+    } else {
+      // todo tostify
+      return;
+    }
+    // whenever the change is happening calling this function to check the winner
+    checkWinner();
+  };
   return (
     <Container>
       <Row>
         <Col md={6}>
-          <h1>TIC TAC TOE Game</h1>
+          <h1 className="text-white text-center">TIC TAC TOE Game</h1>
+
+          {/* Showing the status */}
+          {endMessage ? (
+            <h1 className="text-white text-center">{endMessage}</h1>
+          ) : (
+            <h1 className="text-white text-center">
+              {isCross ? "Cross" : "Circle"} turns
+            </h1>
+          )}
+
           <div className="grid">
             {itemArray.map((item, key) => {
               return (
-                <Card key={key}>
+                // On clicking the card then it need to trigger the changeItem event to change the icon of the card displayed
+                <Card
+                  key={key}
+                  onClick={() => {
+                    changeItem(key);
+                  }}
+                >
                   <CardBody>
                     <Icons item={item} />
                   </CardBody>
                 </Card>
               );
             })}
-            {checkWinner()}
           </div>
         </Col>
       </Row>
