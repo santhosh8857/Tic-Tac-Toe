@@ -3,6 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 import "./App.css";
 import Icons from "./components/Icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // array for the cards with empty string
 // fill function will automatically add the required data in the all indexes
@@ -90,7 +92,7 @@ const App = () => {
   const changeItem = (itemNumber) => {
     // ending the game and allowing the players to click further
     if (endMessage) {
-      return;
+      return toast({ endMessage }, { type: "success" });
     }
 
     // checking the card, if it is empty then change to cross or circle
@@ -103,14 +105,14 @@ const App = () => {
       // setting it to true so that the player 2 will take the cross (to toggle b/w the players)
       setIsCross(!isCross);
     } else {
-      // todo tostify
-      return;
+      return toast("Already filled", { type: "error" });
     }
     // whenever the change is happening calling this function to check the winner
     checkWinner();
   };
   return (
     <Container>
+      <ToastContainer />
       <Row>
         <Col md={6}>
           <h1 className="text-white text-center">TIC TAC TOE Game</h1>
